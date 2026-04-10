@@ -96,7 +96,7 @@ export type StoryTeaser = {
 const defaultStoryTeaser: StoryTeaser = {
   heading: "漫画の中から、\nバンドが生まれた。",
   body: "「かっこいい！」ではなく、「私でもできそう」──\nそんな小さな衝動から始まった物語。\nはみ出し者の鳴世と、クセの強い3人が出会い、\n止まっていた青春がロックのリズムで動き出す。\n\n漫画「ロックが鳴る！」の世界から飛び出した\n4人組ガールズバンド HoneyTrap。\nフィクションとリアルの境界が溶ける、\n新しいIP体験が、ここから始まる。",
-  image: "",
+  image: "/images/story/story-teaser.jpg",
   mangaUrl: "https://rookie.shonenjump.com/series/OmkvmYUPeL8",
   mangaLabel: "READ MANGA →",
 };
@@ -158,7 +158,7 @@ const defaultMovies: Movie[] = [
     date: "2026.03",
     description: "プロジェクト始動を告知するティザー映像。",
     videoUrl: "",
-    thumbnail: "",
+    thumbnail: "/images/movies/movie-2.jpg",
   },
 ];
 
@@ -198,7 +198,7 @@ const defaultAbout: AboutContent = {
     name: "chao!",
     role: "イラストレーター / マルチクリエイター",
     bio: "色鮮やかでポップかつレトロなタッチが特徴。大人には懐かしい、Z世代には新しい──\nそんなスタイルで国内外の企業アートワークを手がける。\nJO1、杏里、Little Glee Monster、ドン・キホーテ、オロナミンC、Hyundaiなど実績多数。",
-    image: "",
+    image: "/images/about/creator.jpg",
     links: [
       { label: "Official Site", url: "https://www.chao-illustrator.com" },
       { label: "X", url: "https://x.com/chao_artworks" },
