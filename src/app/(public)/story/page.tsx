@@ -4,18 +4,21 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import SectionHeading from "@/components/SectionHeading";
-import { getMembers, getStoryTeaser, type StoryTeaser } from "@/lib/cms";
+import { getMembers, getStoryTeaser, getStoryPage, type StoryTeaser, type StoryPageContent } from "@/lib/cms";
 import type { Member } from "@/data/members";
 
 export default function StoryPage() {
   const [story, setStory] = useState<StoryTeaser | null>(null);
+  const [page, setPage] = useState<StoryPageContent | null>(null);
   const [members, setMembers] = useState<Member[]>([]);
 
   useEffect(() => {
     setStory(getStoryTeaser());
+    setPage(getStoryPage());
     setMembers(getMembers());
     const handler = () => {
       setStory(getStoryTeaser());
+      setPage(getStoryPage());
       setMembers(getMembers());
     };
     window.addEventListener("ht-cms-update", handler);
@@ -25,6 +28,8 @@ export default function StoryPage() {
       window.removeEventListener("storage", handler);
     };
   }, []);
+
+  if (!page) return null;
 
   return (
     <>
@@ -53,22 +58,9 @@ export default function StoryPage() {
           >
             <SectionHeading title="ORIGIN" subtitle="はじまり" />
             <div className="space-y-6 font-body text-sm text-[var(--ht-ivory)]/60 leading-loose">
-              <p>
-                「かっこいい！」ではなく、「私でもできそう」。<br />
-                そんな小さくて、少し情けない動機から、すべては始まった。
-              </p>
-              <p>
-                主人公・鳴世は、どこにも居場所がなかった。<br />
-                教室の隅で、何者にもなれない自分を持て余していた。<br />
-                ある日、手に取ったギター。不格好なコード。<br />
-                でも、その音には不思議な熱があった。
-              </p>
-              <p>
-                クールで寡黙なギタリスト・レイ。<br />
-                面倒見のいいベーシスト・マコ。<br />
-                破天荒なドラマー・ヒナ。<br />
-                クセの強い3人と出会い、HoneyTrapは動き出す。
-              </p>
+              {page.originBody.split("\n\n").map((paragraph, i) => (
+                <p key={i} className="whitespace-pre-line">{paragraph}</p>
+              ))}
             </div>
           </motion.div>
 
@@ -156,28 +148,21 @@ export default function StoryPage() {
         <div className="max-w-[1400px] mx-auto relative z-10">
           <SectionHeading title="WORLD" subtitle="漫画と現実が接続する世界" />
           <div className="max-w-3xl space-y-8 font-body text-sm text-[var(--ht-ivory)]/60 leading-loose">
-            <p>
-              HoneyTrapは、漫画「ロックが鳴る！」の中で生まれたガールズロックバンド。<br />
-              しかし彼女たちの音楽は、漫画のコマの中だけには収まらなかった。
-            </p>
-            <p>
-              ページをめくるたびに聴こえてくるギターリフ。<br />
-              コマの外に溢れ出すドラムのビート。<br />
-              鳴世の歌声が、紙の上から現実世界へと響き始める。
-            </p>
-            <p>
-              漫画から音楽へ。音楽からMVへ。MVからライブへ。<br />
-              フィクションとリアルの境界線が溶けていく──<br />
-              それがHoneyTrapというプロジェクトの本質。
-            </p>
-            <motion.blockquote
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="border-l-2 border-[var(--ht-pink)] pl-6 py-2 text-[var(--ht-ivory)]/40 italic"
-            >
-              &quot;このバンドは、本当に存在するのかもしれない。&quot;
-            </motion.blockquote>
+            {page.worldBody.split("\n\n").map((paragraph, i, arr) =>
+              i === arr.length - 1 ? (
+                <motion.blockquote
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="border-l-2 border-[var(--ht-pink)] pl-6 py-2 text-[var(--ht-ivory)]/40 italic whitespace-pre-line"
+                >
+                  &quot;{paragraph}&quot;
+                </motion.blockquote>
+              ) : (
+                <p key={i} className="whitespace-pre-line">{paragraph}</p>
+              )
+            )}
           </div>
         </div>
       </section>
@@ -186,15 +171,7 @@ export default function StoryPage() {
       <section className="py-24 md:py-32 px-6 md:px-10 max-w-[1400px] mx-auto">
         <SectionHeading title="TIMELINE" subtitle="これまでの歩み" />
         <div className="max-w-2xl space-y-0">
-          {[
-            { date: "2026.03", event: "漫画「ロックが鳴る！」連載開始", sub: "ジャンプルーキー！" },
-            { date: "2026.04", event: "HoneyTrap プロジェクト始動", sub: "" },
-            { date: "2026.04", event: "公式サイトオープン", sub: "" },
-            { date: "2026.04", event: "1st Single「ロックが鳴る」配信開始", sub: "Spotify / Apple Music" },
-            { date: "Coming", event: "Music Video 公開", sub: "" },
-            { date: "Coming", event: "2nd Single", sub: "" },
-            { date: "Future", event: "Live? Anime? ...", sub: "to be continued" },
-          ].map((item, i) => (
+          {page.timeline.map((item, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, x: -20 }}

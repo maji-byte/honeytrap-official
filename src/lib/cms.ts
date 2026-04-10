@@ -98,6 +98,35 @@ const defaultStoryTeaser: StoryTeaser = {
   mangaLabel: "READ MANGA →",
 };
 
+// ===== Story Page (ストーリーページ全体) =====
+export type TimelineItem = {
+  date: string;
+  event: string;
+  sub: string;
+};
+
+export type StoryPageContent = {
+  originBody: string;
+  worldBody: string;
+  timeline: TimelineItem[];
+};
+
+const defaultStoryPage: StoryPageContent = {
+  originBody:
+    "「かっこいい！」ではなく、「私でもできそう」。\nそんな小さくて、少し情けない動機から、すべては始まった。\n\n主人公・鳴世は、どこにも居場所がなかった。\n教室の隅で、何者にもなれない自分を持て余していた。\nある日、手に取ったギター。不格好なコード。\nでも、その音には不思議な熱があった。\n\nクールで寡黙なギタリスト・レイ。\n面倒見のいいベーシスト・マコ。\n破天荒なドラマー・ヒナ。\nクセの強い3人と出会い、HoneyTrapは動き出す。",
+  worldBody:
+    "HoneyTrapは、漫画「ロックが鳴る！」の中で生まれたガールズロックバンド。\nしかし彼女たちの音楽は、漫画のコマの中だけには収まらなかった。\n\nページをめくるたびに聴こえてくるギターリフ。\nコマの外に溢れ出すドラムのビート。\n鳴世の歌声が、紙の上から現実世界へと響き始める。\n\n漫画から音楽へ。音楽からMVへ。MVからライブへ。\nフィクションとリアルの境界線が溶けていく──\nそれがHoneyTrapというプロジェクトの本質。",
+  timeline: [
+    { date: "2026.03", event: "漫画「ロックが鳴る！」連載開始", sub: "ジャンプルーキー！" },
+    { date: "2026.04", event: "HoneyTrap プロジェクト始動", sub: "" },
+    { date: "2026.04", event: "公式サイトオープン", sub: "" },
+    { date: "2026.04", event: "1st Single「ロックが鳴る」配信開始", sub: "Spotify / Apple Music" },
+    { date: "Coming", event: "Music Video 公開", sub: "" },
+    { date: "Coming", event: "2nd Single", sub: "" },
+    { date: "Future", event: "Live? Anime? ...", sub: "to be continued" },
+  ],
+};
+
 // ===== Movies (映像) =====
 export type Movie = {
   id: string;
@@ -222,6 +251,10 @@ export function getStoryTeaser(): StoryTeaser {
   return getStorage("storyTeaser", defaultStoryTeaser);
 }
 
+export function getStoryPage(): StoryPageContent {
+  return getStorage("storyPage", defaultStoryPage);
+}
+
 export function getMovies(): Movie[] {
   return getStorage("movies", defaultMovies);
 }
@@ -257,6 +290,10 @@ export function saveMusicReleases(data: MusicRelease[]): void {
 
 export function saveStoryTeaser(data: StoryTeaser): void {
   setStorage("storyTeaser", data);
+}
+
+export function saveStoryPage(data: StoryPageContent): void {
+  setStorage("storyPage", data);
 }
 
 export function saveMovies(data: Movie[]): void {
@@ -302,6 +339,11 @@ export function resetStoryTeaser(): StoryTeaser {
   return defaultStoryTeaser;
 }
 
+export function resetStoryPage(): StoryPageContent {
+  setStorage("storyPage", defaultStoryPage);
+  return defaultStoryPage;
+}
+
 export function resetMovies(): Movie[] {
   setStorage("movies", defaultMovies);
   return defaultMovies;
@@ -318,4 +360,4 @@ export function resetAbout(): AboutContent {
 }
 
 // ===== Default exports (for admin forms) =====
-export { defaultHero, defaultStoryTeaser, defaultReleases, defaultMovies, defaultMembers, defaultNews, defaultGoods, defaultGalleryItems, defaultAbout };
+export { defaultHero, defaultStoryTeaser, defaultStoryPage, defaultReleases, defaultMovies, defaultMembers, defaultNews, defaultGoods, defaultGalleryItems, defaultAbout };
