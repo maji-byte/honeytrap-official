@@ -40,6 +40,7 @@ export type MusicRelease = {
   appleMusicUrl: string;
   mvUrl: string;
   audioFile: string;
+  comingSoon?: boolean;
 };
 
 const defaultReleases: MusicRelease[] = [
@@ -66,6 +67,7 @@ const defaultReleases: MusicRelease[] = [
     appleMusicUrl: "",
     mvUrl: "",
     audioFile: "/audio/release-2.mp3",
+    comingSoon: true,
   },
   {
     id: "release-3",
@@ -78,6 +80,7 @@ const defaultReleases: MusicRelease[] = [
     appleMusicUrl: "",
     mvUrl: "",
     audioFile: "/audio/release-3.mp3",
+    comingSoon: true,
   },
 ];
 

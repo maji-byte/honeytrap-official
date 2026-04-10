@@ -195,7 +195,7 @@ export default function MusicPage() {
                     src={release.jacket}
                     alt={release.title}
                     fill
-                    className="object-cover"
+                    className={`object-cover ${release.comingSoon ? "blur-sm scale-105" : ""}`}
                     sizes="300px"
                     unoptimized
                   />
@@ -207,6 +207,20 @@ export default function MusicPage() {
                     </div>
                   </div>
                 )}
+                {/* Coming Soon オーバーレイ */}
+                {release.comingSoon && (
+                  <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center">
+                    <p className="font-heading text-2xl md:text-3xl font-bold text-[var(--ht-ivory)] tracking-[0.15em]">
+                      COMING
+                    </p>
+                    <p className="font-heading text-2xl md:text-3xl font-bold text-[var(--ht-pink)] tracking-[0.15em]">
+                      SOON
+                    </p>
+                    <p className="font-body text-xs text-[var(--ht-ivory)]/40 mt-3">
+                      {release.date}
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Info */}
@@ -214,41 +228,50 @@ export default function MusicPage() {
                 <p className="font-heading text-xs tracking-[0.2em] text-[var(--ht-pink)] mb-2">
                   {release.date} / {release.type}
                 </p>
-                <h3 className="font-heading text-2xl md:text-4xl font-bold text-[var(--ht-ivory)] mb-4">
+                <h3 className={`font-heading text-2xl md:text-4xl font-bold mb-4 ${release.comingSoon ? "text-[var(--ht-ivory)]/40" : "text-[var(--ht-ivory)]"}`}>
                   {release.title}
                 </h3>
                 <p className="font-body text-sm text-[var(--ht-ivory)]/50 leading-relaxed mb-6 max-w-lg">
                   {release.description}
                 </p>
 
-                {/* 音声プレイヤー（ファイルがある場合） */}
-                {release.audioFile && (
-                  <div className="mb-6 max-w-lg">
-                    <AudioPlayer
-                      src={release.audioFile}
-                      title={`${release.title} - HoneyTrap`}
-                      jacket={release.jacket}
-                    />
-                  </div>
-                )}
+                {/* Coming Soonでない場合のみプレイヤー表示 */}
+                {!release.comingSoon && (
+                  <>
+                    {/* 音声プレイヤー（ファイルがある場合） */}
+                    {release.audioFile && (
+                      <div className="mb-6 max-w-lg">
+                        <AudioPlayer
+                          src={release.audioFile}
+                          title={`${release.title} - HoneyTrap`}
+                          jacket={release.jacket}
+                        />
+                      </div>
+                    )}
 
-                {/* Spotify 埋め込みプレイヤー（URLがある場合） */}
-                {release.spotifyUrl && toSpotifyEmbed(release.spotifyUrl) && !release.audioFile && (
-                  <div className="mb-6 max-w-lg">
-                    <iframe
-                      src={toSpotifyEmbed(release.spotifyUrl)!}
-                      width="100%"
-                      height="80"
-                      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                      loading="lazy"
-                      className="rounded-lg"
-                      style={{ border: "none" }}
-                    />
-                  </div>
+                    {/* Spotify 埋め込みプレイヤー（URLがある場合） */}
+                    {release.spotifyUrl && toSpotifyEmbed(release.spotifyUrl) && !release.audioFile && (
+                      <div className="mb-6 max-w-lg">
+                        <iframe
+                          src={toSpotifyEmbed(release.spotifyUrl)!}
+                          width="100%"
+                          height="80"
+                          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                          loading="lazy"
+                          className="rounded-lg"
+                          style={{ border: "none" }}
+                        />
+                      </div>
+                    )}
+                  </>
                 )}
 
                 <div className="flex gap-4">
-                  {release.spotifyUrl ? (
+                  {release.comingSoon ? (
+                    <span className="inline-block px-8 py-2.5 bg-white/5 text-[var(--ht-ivory)]/30 font-heading text-xs tracking-[0.2em] cursor-default border border-white/5">
+                      COMING SOON
+                    </span>
+                  ) : release.spotifyUrl ? (
                     <a href={release.spotifyUrl} target="_blank" rel="noopener noreferrer" className="inline-block px-6 py-2 bg-[var(--ht-pink)] text-[var(--ht-ivory)] font-heading text-xs tracking-wider hover:bg-[var(--ht-pink)]/80 transition-colors">
                       Spotify
                     </a>
@@ -257,7 +280,7 @@ export default function MusicPage() {
                       COMING SOON
                     </span>
                   ) : null}
-                  {release.appleMusicUrl && (
+                  {!release.comingSoon && release.appleMusicUrl && (
                     <a href={release.appleMusicUrl} target="_blank" rel="noopener noreferrer" className="inline-block px-6 py-2 border border-white/10 text-[var(--ht-ivory)]/50 font-heading text-xs tracking-wider hover:border-[var(--ht-teal)] hover:text-[var(--ht-teal)] transition-colors">
                       Apple Music
                     </a>

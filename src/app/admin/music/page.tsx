@@ -46,6 +46,7 @@ export default function AdminMusic() {
       appleMusicUrl: "",
       mvUrl: "",
       audioFile: "",
+      comingSoon: false,
     };
     setReleases([newRelease, ...releases]);
     setEditId(newRelease.id);
@@ -106,6 +107,11 @@ export default function AdminMusic() {
                   <span className="text-[10px] px-2 py-0.5 rounded bg-[var(--ht-pink)]/10 text-[var(--ht-pink)] font-heading">
                     {release.type}
                   </span>
+                  {release.comingSoon && (
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-[var(--ht-ivory)]/10 text-[var(--ht-ivory)]/50 font-heading">
+                      COMING SOON
+                    </span>
+                  )}
                 </div>
                 <p className="text-xs text-[var(--ht-ivory)]/40 font-mono mt-0.5">{release.date}</p>
               </div>
@@ -120,6 +126,29 @@ export default function AdminMusic() {
 
             {editId === release.id && (
               <div className="border-t border-white/5 p-5 space-y-4">
+                {/* Coming Soon トグル */}
+                <div className="flex items-center justify-between bg-[#111115] border border-white/5 rounded-lg px-4 py-3">
+                  <div>
+                    <p className="text-xs font-heading text-[var(--ht-ivory)] tracking-wider">COMING SOON</p>
+                    <p className="text-[10px] text-[var(--ht-ivory)]/30 mt-0.5">ONにすると、サイト上でぼかし＋Coming Soon表示になります</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setReleases(releases.map((r) =>
+                        r.id === release.id ? { ...r, comingSoon: !r.comingSoon } : r
+                      ));
+                    }}
+                    className={`relative w-12 h-6 rounded-full transition-colors ${
+                      release.comingSoon ? "bg-[var(--ht-pink)]" : "bg-white/10"
+                    }`}
+                  >
+                    <span
+                      className={`absolute top-0.5 w-5 h-5 rounded-full bg-white transition-transform ${
+                        release.comingSoon ? "translate-x-6" : "translate-x-0.5"
+                      }`}
+                    />
+                  </button>
+                </div>
                 {/* ジャケット画像 + 基本情報 */}
                 <div className="grid grid-cols-[120px_1fr] gap-5">
                   <ImageUploader
