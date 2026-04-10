@@ -46,9 +46,10 @@ function VideoPlayer({ url }: { url: string }) {
     return (
       <iframe
         src={`${vimeoEmbed}&title=0&byline=0&portrait=0`}
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full bg-black"
         allow="autoplay; fullscreen"
         allowFullScreen
+        style={{ border: "none" }}
       />
     );
   }
@@ -104,7 +105,7 @@ export default function MoviePage() {
               transition={{ duration: 0.5 }}
             >
               {/* Video area */}
-              <div className="aspect-video bg-[var(--ht-black)] border border-white/5 max-w-4xl mx-auto mb-6 relative overflow-hidden">
+              <div className="aspect-video bg-[var(--ht-black)] max-w-4xl mx-auto mb-6 relative overflow-hidden rounded-lg">
                 {playingId === movie.id && movie.videoUrl ? (
                   <VideoPlayer url={movie.videoUrl} />
                 ) : (

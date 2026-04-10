@@ -300,9 +300,10 @@ export default function Home() {
                       return (
                         <iframe
                           src={`${vimeoEmbed}&autoplay=1&title=0&byline=0&portrait=0`}
-                          className="absolute inset-0 w-full h-full"
+                          className="absolute inset-0 w-full h-full bg-black"
                           allow="autoplay; fullscreen"
                           allowFullScreen
+                          style={{ border: "none" }}
                         />
                       );
                     }
