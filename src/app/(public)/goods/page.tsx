@@ -18,7 +18,7 @@ export default function GoodsPage() {
   return (
     <>
       <section className="relative h-[50vh] flex items-end overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A] via-[#1A1A1A] to-[#111111]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A] via-[#1A1A1A]/90 to-[var(--ht-bg)]" />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-10 pb-16 w-full">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <p className="font-heading text-xs tracking-[0.4em] text-[var(--ht-orange)] mb-4">GOODS</p>
@@ -41,16 +41,16 @@ export default function GoodsPage() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="mt-16 text-center py-12 border border-white/5"
+          className="mt-16 text-center py-12 border border-[var(--ht-border)] rounded-2xl bg-white shadow-sm"
         >
-          <p className="font-body text-sm text-[var(--ht-ivory)]/40 mb-4">
+          <p className="font-body text-sm text-[var(--ht-text-muted)] mb-4">
             購入は外部ECサイトで承ります
           </p>
           <a
             href="#"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-10 py-3 bg-[var(--ht-pink)] text-[var(--ht-ivory)] font-heading text-xs tracking-[0.2em] hover:bg-[var(--ht-pink)]/80 transition-colors"
+            className="inline-block px-10 py-3 bg-[var(--ht-pink)] text-white font-heading text-xs tracking-[0.2em] hover:bg-[var(--ht-pink)]/80 transition-colors rounded-full"
           >
             GO TO ONLINE SHOP
           </a>

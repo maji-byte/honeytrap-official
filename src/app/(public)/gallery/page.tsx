@@ -30,7 +30,7 @@ export default function GalleryPage() {
   return (
     <>
       <section className="relative h-[50vh] flex items-end overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A] via-[#1A1A1A] to-[#111111]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A] via-[#1A1A1A]/90 to-[var(--ht-bg)]" />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-10 pb-16 w-full">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <p className="font-heading text-xs tracking-[0.4em] text-[var(--ht-teal)] mb-4">GALLERY</p>
@@ -48,10 +48,10 @@ export default function GalleryPage() {
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`px-4 py-1.5 text-xs font-heading tracking-wider transition-colors ${
+              className={`px-4 py-1.5 text-xs font-heading tracking-wider transition-colors rounded-full ${
                 filter === cat
-                  ? "bg-[var(--ht-pink)] text-[var(--ht-ivory)]"
-                  : "border border-white/10 text-[var(--ht-ivory)]/40 hover:border-[var(--ht-pink)] hover:text-[var(--ht-pink)]"
+                  ? "bg-[var(--ht-pink)] text-white"
+                  : "border border-[var(--ht-border)] text-[var(--ht-text-muted)] hover:border-[var(--ht-pink)] hover:text-[var(--ht-pink)]"
               }`}
             >
               {cat}
@@ -71,13 +71,13 @@ export default function GalleryPage() {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
                 onClick={() => setSelected(item)}
-                className={`cursor-pointer group relative overflow-hidden bg-[var(--ht-dark-gray)] ${
+                className={`cursor-pointer group relative overflow-hidden bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow ${
                   item.aspect === "portrait" ? "row-span-2" : item.aspect === "landscape" ? "col-span-2" : ""
                 }`}
               >
                 <div className={`relative w-full ${
                   item.aspect === "portrait" ? "aspect-[3/4]" : item.aspect === "landscape" ? "aspect-video" : "aspect-square"
-                } bg-gradient-to-br from-[var(--ht-dark-gray)] to-[var(--ht-black)]`}>
+                } bg-gradient-to-br from-[var(--ht-bg-alt)] to-white`}>
                   {item.src ? (
                     <Image
                       src={item.src}
@@ -89,14 +89,14 @@ export default function GalleryPage() {
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="font-heading text-xs text-[var(--ht-ivory)]/10">{item.category}</span>
+                      <span className="font-heading text-xs text-[var(--ht-text)]/10">{item.category}</span>
                     </div>
                   )}
                 </div>
-                <div className="absolute inset-0 bg-[var(--ht-black)]/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 rounded-xl">
                   <div>
-                    <p className="text-xs font-body text-[var(--ht-ivory)]">{item.alt}</p>
-                    <p className="text-[10px] font-heading text-[var(--ht-ivory)]/40 mt-1">{item.category}</p>
+                    <p className="text-xs font-body text-white">{item.alt}</p>
+                    <p className="text-[10px] font-heading text-white/50 mt-1">{item.category}</p>
                   </div>
                 </div>
               </motion.div>
@@ -113,7 +113,7 @@ export default function GalleryPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelected(null)}
-            className="fixed inset-0 z-[100] bg-[var(--ht-black)]/95 flex items-center justify-center p-8 cursor-pointer"
+            className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-8 cursor-pointer"
           >
             <motion.div
               initial={{ scale: 0.9 }}
@@ -122,7 +122,7 @@ export default function GalleryPage() {
               className="max-w-4xl w-full"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="relative aspect-[4/3] bg-[var(--ht-dark-gray)] overflow-hidden">
+              <div className="relative aspect-[4/3] bg-[var(--ht-text)] overflow-hidden rounded-xl">
                 {selected.src ? (
                   <Image
                     src={selected.src}
@@ -140,12 +140,12 @@ export default function GalleryPage() {
               </div>
               <div className="flex items-center justify-between mt-4">
                 <div>
-                  <p className="text-sm font-body text-[var(--ht-ivory)]/60">{selected.alt}</p>
-                  <p className="text-xs font-heading text-[var(--ht-ivory)]/20 mt-1">{selected.category}</p>
+                  <p className="text-sm font-body text-white/70">{selected.alt}</p>
+                  <p className="text-xs font-heading text-white/30 mt-1">{selected.category}</p>
                 </div>
                 <button
                   onClick={() => setSelected(null)}
-                  className="text-xs text-[var(--ht-ivory)]/30 hover:text-[var(--ht-ivory)] font-heading tracking-wider transition-colors"
+                  className="text-xs text-white/40 hover:text-white font-heading tracking-wider transition-colors"
                 >
                   CLOSE
                 </button>

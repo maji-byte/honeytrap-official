@@ -20,7 +20,7 @@ export default function SectionHeading({ title, subtitle, align = "left", light 
     >
       <h2
         className={`section-heading text-3xl md:text-5xl ${
-          light ? "text-[var(--ht-black)]" : "text-[var(--ht-ivory)]"
+          light ? "text-[var(--ht-ivory)]" : "text-[var(--ht-text)]"
         }`}
         style={align === "center" ? { display: "inline-block" } : undefined}
       >
@@ -29,7 +29,7 @@ export default function SectionHeading({ title, subtitle, align = "left", light 
       {subtitle && (
         <p
           className={`mt-4 text-sm tracking-wider font-body ${
-            light ? "text-[var(--ht-black)]/50" : "text-[var(--ht-ivory)]/40"
+            light ? "text-[var(--ht-ivory)]/50" : "text-[var(--ht-text-muted)]"
           }`}
         >
           {subtitle}

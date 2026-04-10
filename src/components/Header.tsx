@@ -35,13 +35,15 @@ export default function Header() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-[#1A1A1A]/90 backdrop-blur-md border-b border-white/5"
+            ? "bg-white/90 backdrop-blur-md border-b border-[var(--ht-border)] shadow-sm"
             : "bg-transparent"
         }`}
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="relative z-50">
-            <span className="font-heading text-xl md:text-2xl font-bold tracking-widest text-[var(--ht-ivory)] hover:text-[var(--ht-pink)] transition-colors">
+            <span className={`font-heading text-xl md:text-2xl font-bold tracking-widest transition-colors ${
+              scrolled ? "text-[var(--ht-text)] hover:text-[var(--ht-pink)]" : "text-[var(--ht-ivory)] hover:text-[var(--ht-pink)]"
+            }`}>
               HoneyTrap
             </span>
           </Link>
@@ -52,7 +54,9 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-heading text-xs tracking-[0.2em] text-[var(--ht-ivory)]/70 hover:text-[var(--ht-pink)] transition-colors"
+                className={`font-heading text-xs tracking-[0.2em] transition-colors hover:text-[var(--ht-pink)] ${
+                  scrolled ? "text-[var(--ht-text)]/60" : "text-[var(--ht-ivory)]/70"
+                }`}
               >
                 {link.label}
               </Link>
@@ -66,18 +70,18 @@ export default function Header() {
             aria-label="メニュー"
           >
             <span
-              className={`block w-6 h-[1.5px] bg-[var(--ht-ivory)] transition-all duration-300 ${
-                menuOpen ? "rotate-45 translate-y-[4.5px]" : ""
+              className={`block w-6 h-[1.5px] transition-all duration-300 ${
+                menuOpen ? "rotate-45 translate-y-[4.5px] bg-[var(--ht-ivory)]" : scrolled ? "bg-[var(--ht-text)]" : "bg-[var(--ht-ivory)]"
               }`}
             />
             <span
-              className={`block w-6 h-[1.5px] bg-[var(--ht-ivory)] transition-all duration-300 ${
-                menuOpen ? "opacity-0" : ""
+              className={`block w-6 h-[1.5px] transition-all duration-300 ${
+                menuOpen ? "opacity-0 bg-[var(--ht-ivory)]" : scrolled ? "bg-[var(--ht-text)]" : "bg-[var(--ht-ivory)]"
               }`}
             />
             <span
-              className={`block w-6 h-[1.5px] bg-[var(--ht-ivory)] transition-all duration-300 ${
-                menuOpen ? "-rotate-45 -translate-y-[4.5px]" : ""
+              className={`block w-6 h-[1.5px] transition-all duration-300 ${
+                menuOpen ? "-rotate-45 -translate-y-[4.5px] bg-[var(--ht-ivory)]" : scrolled ? "bg-[var(--ht-text)]" : "bg-[var(--ht-ivory)]"
               }`}
             />
           </button>

@@ -9,9 +9,7 @@ import { getMusicReleases, type MusicRelease } from "@/lib/cms";
 // Spotify URLから埋め込みURLを生成
 function toSpotifyEmbed(url: string): string | null {
   if (!url) return null;
-  // すでにembed URLの場合
   if (url.includes("/embed/")) return url;
-  // open.spotify.com/track/xxx → embed/track/xxx
   const match = url.match(/open\.spotify\.com\/(track|album|artist|playlist)\/([a-zA-Z0-9]+)/);
   if (match) return `https://open.spotify.com/embed/${match[1]}/${match[2]}?theme=0`;
   return null;
@@ -41,7 +39,7 @@ function AudioPlayer({ src, title, jacket }: { src: string; title: string; jacke
   };
 
   return (
-    <div className="bg-[#111115] border border-white/5 rounded-lg p-4 flex items-center gap-4">
+    <div className="bg-white border border-[var(--ht-border)] rounded-xl p-4 flex items-center gap-4 shadow-sm">
       <audio
         ref={audioRef}
         src={src}
@@ -51,11 +49,11 @@ function AudioPlayer({ src, title, jacket }: { src: string; title: string; jacke
       />
 
       {/* ジャケットミニ */}
-      <div className="w-12 h-12 rounded overflow-hidden relative flex-shrink-0 bg-[var(--ht-dark-gray)]">
+      <div className="w-12 h-12 rounded-lg overflow-hidden relative flex-shrink-0 bg-[var(--ht-bg-alt)]">
         {jacket ? (
           <Image src={jacket} alt={title} fill className="object-cover" sizes="48px" unoptimized />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-lg text-[var(--ht-ivory)]/10">♪</div>
+          <div className="w-full h-full flex items-center justify-center text-lg text-[var(--ht-text)]/10">&#9835;</div>
         )}
       </div>
 
@@ -65,17 +63,17 @@ function AudioPlayer({ src, title, jacket }: { src: string; title: string; jacke
         className="w-10 h-10 rounded-full border border-[var(--ht-pink)] flex items-center justify-center flex-shrink-0 hover:bg-[var(--ht-pink)]/10 transition-colors"
       >
         <span className="text-[var(--ht-pink)] text-sm" style={{ marginLeft: playing ? 0 : 2 }}>
-          {playing ? "⏸" : "▶"}
+          {playing ? "\u23F8" : "\u25B6"}
         </span>
       </button>
 
       {/* 曲情報 + プログレスバー */}
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-body text-[var(--ht-ivory)] truncate">{title}</p>
+        <p className="text-sm font-body text-[var(--ht-text)] truncate">{title}</p>
         <div className="flex items-center gap-2 mt-1.5">
-          <span className="text-[10px] text-[var(--ht-ivory)]/30 font-mono w-8">{formatTime(currentTime)}</span>
+          <span className="text-[10px] text-[var(--ht-text-muted)] font-mono w-8">{formatTime(currentTime)}</span>
           <div
-            className="flex-1 h-1 bg-white/10 rounded-full cursor-pointer relative"
+            className="flex-1 h-1 bg-[var(--ht-text)]/10 rounded-full cursor-pointer relative"
             onClick={(e) => {
               if (!audioRef.current || !duration) return;
               const rect = e.currentTarget.getBoundingClientRect();
@@ -88,7 +86,7 @@ function AudioPlayer({ src, title, jacket }: { src: string; title: string; jacke
               style={{ width: duration ? `${(currentTime / duration) * 100}%` : "0%" }}
             />
           </div>
-          <span className="text-[10px] text-[var(--ht-ivory)]/30 font-mono w-8 text-right">{formatTime(duration)}</span>
+          <span className="text-[10px] text-[var(--ht-text-muted)] font-mono w-8 text-right">{formatTime(duration)}</span>
         </div>
       </div>
     </div>
@@ -109,7 +107,6 @@ export default function MusicPage() {
     };
   }, []);
 
-  // Spotify埋め込み: 最初のSpotify URLを持つリリースを使用
   const spotifyRelease = releases.find((r) => r.spotifyUrl);
   const spotifyEmbed = spotifyRelease ? toSpotifyEmbed(spotifyRelease.spotifyUrl) : null;
 
@@ -117,8 +114,7 @@ export default function MusicPage() {
     <>
       {/* Hero */}
       <section className="relative h-[50vh] flex items-end overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A] via-[#1A1A1A] to-[#0A0A0A]" />
-        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[var(--ht-pink)]/5 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A] via-[#1A1A1A]/90 to-[var(--ht-bg)]" />
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-10 pb-16 w-full">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <p className="font-heading text-xs tracking-[0.4em] text-[var(--ht-pink)] mb-4">MUSIC</p>
@@ -130,7 +126,7 @@ export default function MusicPage() {
       </section>
 
       {/* Streaming / Spotify Embed */}
-      <section className="py-24 md:py-32 px-6 md:px-10 bg-[#0A0A0A]">
+      <section className="py-24 md:py-32 px-6 md:px-10">
         <div className="max-w-[1400px] mx-auto">
           <SectionHeading title="STREAMING" subtitle="ストリーミング" />
 
@@ -147,7 +143,7 @@ export default function MusicPage() {
                 height="352"
                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                 loading="lazy"
-                className="rounded-xl"
+                className="rounded-xl shadow-md"
                 style={{ border: "none" }}
               />
             </motion.div>
@@ -156,18 +152,18 @@ export default function MusicPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="max-w-2xl bg-[var(--ht-dark-gray)] p-8 md:p-12"
+              className="max-w-2xl bg-white border border-[var(--ht-border)] p-8 md:p-12 rounded-2xl shadow-sm"
             >
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-14 h-14 bg-[#1DB954] flex items-center justify-center text-white font-bold text-2xl rounded">
-                  ▶
+                <div className="w-14 h-14 bg-[#1DB954] flex items-center justify-center text-white font-bold text-2xl rounded-xl">
+                  &#9654;
                 </div>
                 <div>
-                  <p className="font-heading text-lg text-[var(--ht-ivory)]">HoneyTrap</p>
-                  <p className="text-xs text-[var(--ht-ivory)]/40 font-body">ストリーミング準備中</p>
+                  <p className="font-heading text-lg text-[var(--ht-text)]">HoneyTrap</p>
+                  <p className="text-xs text-[var(--ht-text-muted)] font-body">ストリーミング準備中</p>
                 </div>
               </div>
-              <p className="text-xs font-body text-[var(--ht-ivory)]/30">
+              <p className="text-xs font-body text-[var(--ht-text-muted)]">
                 楽曲管理でSpotify URLを設定すると、ここにプレイヤーが表示されます
               </p>
             </motion.div>
@@ -189,7 +185,7 @@ export default function MusicPage() {
               className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8 md:gap-12"
             >
               {/* Jacket */}
-              <div className="aspect-square relative overflow-hidden bg-gradient-to-br from-[var(--ht-pink)]/20 via-[var(--ht-purple)]/10 to-[var(--ht-teal)]/20">
+              <div className="aspect-square relative overflow-hidden rounded-2xl shadow-lg bg-gradient-to-br from-[var(--ht-pink)]/10 via-[var(--ht-purple)]/5 to-[var(--ht-teal)]/10">
                 {release.jacket ? (
                   <Image
                     src={release.jacket}
@@ -202,21 +198,21 @@ export default function MusicPage() {
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
                     <div className="text-center">
-                      <p className="font-heading text-5xl text-[var(--ht-ivory)]/10">♪</p>
-                      <p className="mt-2 font-heading text-xs text-[var(--ht-ivory)]/20">{release.type}</p>
+                      <p className="font-heading text-5xl text-[var(--ht-text)]/10">&#9835;</p>
+                      <p className="mt-2 font-heading text-xs text-[var(--ht-text)]/20">{release.type}</p>
                     </div>
                   </div>
                 )}
                 {/* Coming Soon オーバーレイ */}
                 {release.comingSoon && (
-                  <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center">
-                    <p className="font-heading text-2xl md:text-3xl font-bold text-[var(--ht-ivory)] tracking-[0.15em]">
+                  <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center rounded-2xl">
+                    <p className="font-heading text-2xl md:text-3xl font-bold text-white tracking-[0.15em]">
                       COMING
                     </p>
                     <p className="font-heading text-2xl md:text-3xl font-bold text-[var(--ht-pink)] tracking-[0.15em]">
                       SOON
                     </p>
-                    <p className="font-body text-xs text-[var(--ht-ivory)]/40 mt-3">
+                    <p className="font-body text-xs text-white/50 mt-3">
                       {release.date}
                     </p>
                   </div>
@@ -228,17 +224,15 @@ export default function MusicPage() {
                 <p className="font-heading text-xs tracking-[0.2em] text-[var(--ht-pink)] mb-2">
                   {release.date} / {release.type}
                 </p>
-                <h3 className={`font-heading text-2xl md:text-4xl font-bold mb-4 ${release.comingSoon ? "text-[var(--ht-ivory)]/40" : "text-[var(--ht-ivory)]"}`}>
+                <h3 className={`font-heading text-2xl md:text-4xl font-bold mb-4 ${release.comingSoon ? "text-[var(--ht-text)]/30" : "text-[var(--ht-text)]"}`}>
                   {release.title}
                 </h3>
-                <p className="font-body text-sm text-[var(--ht-ivory)]/50 leading-relaxed mb-6 max-w-lg">
+                <p className="font-body text-sm text-[var(--ht-text-muted)] leading-relaxed mb-6 max-w-lg">
                   {release.description}
                 </p>
 
-                {/* Coming Soonでない場合のみプレイヤー表示 */}
                 {!release.comingSoon && (
                   <>
-                    {/* 音声プレイヤー（ファイルがある場合） */}
                     {release.audioFile && (
                       <div className="mb-6 max-w-lg">
                         <AudioPlayer
@@ -249,7 +243,6 @@ export default function MusicPage() {
                       </div>
                     )}
 
-                    {/* Spotify 埋め込みプレイヤー（URLがある場合） */}
                     {release.spotifyUrl && toSpotifyEmbed(release.spotifyUrl) && !release.audioFile && (
                       <div className="mb-6 max-w-lg">
                         <iframe
@@ -268,20 +261,20 @@ export default function MusicPage() {
 
                 <div className="flex gap-4">
                   {release.comingSoon ? (
-                    <span className="inline-block px-8 py-2.5 bg-white/5 text-[var(--ht-ivory)]/30 font-heading text-xs tracking-[0.2em] cursor-default border border-white/5">
+                    <span className="inline-block px-8 py-2.5 bg-[var(--ht-text)]/5 text-[var(--ht-text)]/30 font-heading text-xs tracking-[0.2em] cursor-default border border-[var(--ht-border)] rounded-full">
                       COMING SOON
                     </span>
                   ) : release.spotifyUrl ? (
-                    <a href={release.spotifyUrl} target="_blank" rel="noopener noreferrer" className="inline-block px-6 py-2 bg-[var(--ht-pink)] text-[var(--ht-ivory)] font-heading text-xs tracking-wider hover:bg-[var(--ht-pink)]/80 transition-colors">
+                    <a href={release.spotifyUrl} target="_blank" rel="noopener noreferrer" className="inline-block px-6 py-2 bg-[var(--ht-pink)] text-white font-heading text-xs tracking-wider hover:bg-[var(--ht-pink)]/80 transition-colors rounded-full">
                       Spotify
                     </a>
                   ) : !release.audioFile ? (
-                    <span className="inline-block px-6 py-2 bg-[var(--ht-pink)]/30 text-[var(--ht-ivory)]/40 font-heading text-xs tracking-wider cursor-default">
+                    <span className="inline-block px-6 py-2 bg-[var(--ht-pink)]/10 text-[var(--ht-text)]/30 font-heading text-xs tracking-wider cursor-default rounded-full">
                       COMING SOON
                     </span>
                   ) : null}
                   {!release.comingSoon && release.appleMusicUrl && (
-                    <a href={release.appleMusicUrl} target="_blank" rel="noopener noreferrer" className="inline-block px-6 py-2 border border-white/10 text-[var(--ht-ivory)]/50 font-heading text-xs tracking-wider hover:border-[var(--ht-teal)] hover:text-[var(--ht-teal)] transition-colors">
+                    <a href={release.appleMusicUrl} target="_blank" rel="noopener noreferrer" className="inline-block px-6 py-2 border border-[var(--ht-border)] text-[var(--ht-text-muted)] font-heading text-xs tracking-wider hover:border-[var(--ht-teal)] hover:text-[var(--ht-teal)] transition-colors rounded-full">
                       Apple Music
                     </a>
                   )}

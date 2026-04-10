@@ -10,6 +10,12 @@
   --ht-yellow: #E0FD2C;
   --ht-gray: #8A8A8A;
   --ht-dark-gray: #2A2A2A;
+  /* Light theme */
+  --ht-bg: #FAF8F5;
+  --ht-bg-alt: #F0EBE3;
+  --ht-text: #2A2A2A;
+  --ht-text-muted: #6B6560;
+  --ht-border: rgba(42, 42, 42, 0.08);
 }
 
 @theme inline {
@@ -35,8 +41,8 @@ html {
 }
 
 body {
-  background: var(--ht-black);
-  color: var(--ht-ivory);
+  background: var(--ht-bg);
+  color: var(--ht-text);
   font-family: 'Zen Kaku Gothic New', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -56,14 +62,14 @@ h1, h2, h3, h4, h5, h6 {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--ht-black);
+  background: var(--ht-bg);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--ht-pink);
   border-radius: 3px;
 }
 
-/* Noise overlay */
+/* Noise overlay - softer for light theme */
 .noise-overlay {
   position: fixed;
   top: 0;
@@ -72,7 +78,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 100%;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.03;
+  opacity: 0.015;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
@@ -101,6 +107,15 @@ h1, h2, h3, h4, h5, h6 {
   background-clip: text;
 }
 
+/* Card gradient accent */
+.card-gradient {
+  background: linear-gradient(135deg, var(--ht-pink)/8, var(--ht-teal)/8, var(--ht-orange)/5);
+}
+
+.card-gradient-bottom {
+  background: linear-gradient(to bottom, transparent, var(--ht-pink)/5, var(--ht-teal)/8);
+}
+
 /* Retro grain effect for sections */
 .retro-grain {
   position: relative;
@@ -109,7 +124,7 @@ h1, h2, h3, h4, h5, h6 {
   content: '';
   position: absolute;
   inset: 0;
-  opacity: 0.04;
+  opacity: 0.02;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 1;

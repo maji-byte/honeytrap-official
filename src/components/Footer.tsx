@@ -21,7 +21,7 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#111111] border-t border-white/5">
+    <footer className="bg-[var(--ht-text)] border-t border-white/5">
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           {/* Logo & Tagline */}
@@ -76,9 +76,9 @@ export default function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-[var(--ht-ivory)]/20 font-heading tracking-wider">
-            © 2026 HoneyTrap / chao! All Rights Reserved.
+            &copy; 2026 HoneyTrap / chao! All Rights Reserved.
           </p>
           <p className="text-xs text-[var(--ht-ivory)]/20 font-body">
             Original Work: 「ロックが鳴る！」(Jump Rookie!)

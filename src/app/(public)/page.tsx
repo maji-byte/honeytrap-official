@@ -62,10 +62,8 @@ export default function Home() {
 
   useEffect(() => {
     loadData();
-    // 管理画面からの更新をリッスン
     const handler = () => loadData();
     window.addEventListener("ht-cms-update", handler);
-    // 他タブからの localStorage 変更もリッスン
     window.addEventListener("storage", handler);
     return () => {
       window.removeEventListener("ht-cms-update", handler);
@@ -99,9 +97,9 @@ export default function Home() {
             unoptimized
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1F]/70 via-[#1A1A1F]/50 to-[#1A1A1F]/90" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[var(--ht-pink)]/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-[var(--ht-teal)]/5 rounded-full blur-[100px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1F]/60 via-[#1A1A1F]/40 to-[#1A1A1F]/80" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[var(--ht-pink)]/8 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-[var(--ht-teal)]/8 rounded-full blur-[100px]" />
 
         <div className="relative z-10 text-center px-6">
           <motion.div
@@ -109,7 +107,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <p className="font-heading text-xs md:text-sm tracking-[0.4em] text-[var(--ht-ivory)]/40 mb-6">
+            <p className="font-heading text-xs md:text-sm tracking-[0.4em] text-[var(--ht-ivory)]/50 mb-6">
               {hero.subtitle}
             </p>
           </motion.div>
@@ -128,7 +126,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="mt-6 md:mt-8 font-body text-sm md:text-base text-[var(--ht-ivory)]/50 max-w-md mx-auto leading-relaxed"
+            className="mt-6 md:mt-8 font-body text-sm md:text-base text-[var(--ht-ivory)]/60 max-w-md mx-auto leading-relaxed"
           >
             {hero.tagline}
           </motion.p>
@@ -141,13 +139,13 @@ export default function Home() {
           >
             <Link
               href={hero.ctaPrimary.href}
-              className="inline-block px-8 py-3 bg-[var(--ht-pink)] text-[var(--ht-ivory)] font-heading text-xs tracking-[0.2em] hover:bg-[var(--ht-pink)]/80 transition-colors"
+              className="inline-block px-8 py-3 bg-[var(--ht-pink)] text-white font-heading text-xs tracking-[0.2em] hover:bg-[var(--ht-pink)]/80 transition-colors rounded-full"
             >
               {hero.ctaPrimary.label}
             </Link>
             <Link
               href={hero.ctaSecondary.href}
-              className="inline-block px-8 py-3 border border-[var(--ht-ivory)]/20 text-[var(--ht-ivory)] font-heading text-xs tracking-[0.2em] hover:border-[var(--ht-teal)] hover:text-[var(--ht-teal)] transition-colors"
+              className="inline-block px-8 py-3 border border-[var(--ht-ivory)]/30 text-[var(--ht-ivory)] font-heading text-xs tracking-[0.2em] hover:border-[var(--ht-teal)] hover:text-[var(--ht-teal)] transition-colors rounded-full"
             >
               {hero.ctaSecondary.label}
             </Link>
@@ -180,7 +178,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="aspect-square relative overflow-hidden"
+                className="aspect-square relative overflow-hidden rounded-2xl shadow-lg"
               >
                 {latest.jacket ? (
                   <Image
@@ -193,7 +191,7 @@ export default function Home() {
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-[var(--ht-pink)]/20 via-[var(--ht-purple)]/10 to-[var(--ht-teal)]/20 flex items-center justify-center">
-                    <span className="font-heading text-5xl text-[var(--ht-ivory)]/10">♪</span>
+                    <span className="font-heading text-5xl text-[var(--ht-text)]/10">&#9835;</span>
                   </div>
                 )}
               </motion.div>
@@ -207,24 +205,23 @@ export default function Home() {
                 <p className="font-heading text-xs tracking-[0.2em] text-[var(--ht-pink)] mb-3">
                   {latest.date} RELEASE
                 </p>
-                <h3 className="font-heading text-3xl md:text-4xl font-bold text-[var(--ht-ivory)] mb-4">
+                <h3 className="font-heading text-3xl md:text-4xl font-bold text-[var(--ht-text)] mb-4">
                   {latest.title}
                 </h3>
-                <p className="font-body text-sm text-[var(--ht-ivory)]/50 leading-relaxed mb-8">
+                <p className="font-body text-sm text-[var(--ht-text-muted)] leading-relaxed mb-8">
                   {latest.description}
                 </p>
 
                 {/* 音声プレイヤー */}
                 {latest.audioFile && (
                   <div className="mb-6">
-                    <div className="bg-[#111115] border border-white/5 rounded-lg p-4">
+                    <div className="bg-white border border-[var(--ht-border)] rounded-xl p-4 shadow-sm">
                       <audio
                         controls
                         src={latest.audioFile}
                         className="w-full h-10"
-                        style={{ filter: "invert(0.85) hue-rotate(180deg)" }}
                       />
-                      <p className="text-[10px] text-[var(--ht-ivory)]/30 mt-2 font-body">
+                      <p className="text-[10px] text-[var(--ht-text-muted)] mt-2 font-body">
                         {latest.title} - HoneyTrap
                       </p>
                     </div>
@@ -233,14 +230,14 @@ export default function Home() {
 
                 {/* Spotify（音声ファイルがない場合のみ表示） */}
                 {!latest.audioFile && latest.spotifyUrl && (
-                  <div className="bg-[var(--ht-dark-gray)] p-4 mb-6">
+                  <div className="bg-white border border-[var(--ht-border)] rounded-xl p-4 mb-6 shadow-sm">
                     <a href={latest.spotifyUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-[#1DB954] flex items-center justify-center text-white font-bold text-xl">
-                        ▶
+                      <div className="w-12 h-12 bg-[#1DB954] flex items-center justify-center text-white font-bold text-xl rounded-lg">
+                        &#9654;
                       </div>
                       <div>
-                        <p className="text-sm font-body text-[var(--ht-ivory)]">{latest.title} - HoneyTrap</p>
-                        <p className="text-xs text-[var(--ht-ivory)]/40">Spotify で再生</p>
+                        <p className="text-sm font-body text-[var(--ht-text)]">{latest.title} - HoneyTrap</p>
+                        <p className="text-xs text-[var(--ht-text-muted)]">Spotify で再生</p>
                       </div>
                     </a>
                   </div>
@@ -248,13 +245,13 @@ export default function Home() {
 
                 <div className="flex gap-4">
                   {latest.spotifyUrl && (
-                    <a href={latest.spotifyUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-heading tracking-wider text-[var(--ht-teal)] hover:text-[var(--ht-pink)] transition-colors">
-                      Spotify →
+                    <a href={latest.spotifyUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-heading tracking-wider text-[var(--ht-pink)] hover:text-[var(--ht-teal)] transition-colors">
+                      Spotify &rarr;
                     </a>
                   )}
                   {latest.appleMusicUrl && (
-                    <a href={latest.appleMusicUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-heading tracking-wider text-[var(--ht-teal)] hover:text-[var(--ht-pink)] transition-colors">
-                      Apple Music →
+                    <a href={latest.appleMusicUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-heading tracking-wider text-[var(--ht-pink)] hover:text-[var(--ht-teal)] transition-colors">
+                      Apple Music &rarr;
                     </a>
                   )}
                 </div>
@@ -266,10 +263,9 @@ export default function Home() {
 
       {/* ===== MUSIC VIDEO ===== */}
       {(() => {
-        // MOVIEデータの最新（先頭）を表示
         const latestMovie = movies.length > 0 ? movies[0] : null;
         return (
-          <section className="py-24 md:py-32 px-6 md:px-10 bg-[#111111] retro-grain">
+          <section className="py-24 md:py-32 px-6 md:px-10 bg-[var(--ht-bg-alt)]">
             <div className="max-w-[1400px] mx-auto relative z-10">
               <SectionHeading title="MUSIC VIDEO" subtitle="ミュージックビデオ" />
               <motion.div
@@ -277,13 +273,11 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="aspect-video bg-[var(--ht-black)] max-w-4xl mx-auto relative overflow-hidden"
+                className="aspect-video bg-[var(--ht-text)] max-w-4xl mx-auto relative overflow-hidden rounded-2xl shadow-lg"
               >
                 {latestMovie && mvPlaying && latestMovie.videoUrl ? (
-                  // 再生中: YouTube / Vimeo 埋め込み or 動画ファイル
                   (() => {
                     const url = latestMovie.videoUrl;
-                    // YouTube
                     if (url.includes("youtube.com") || url.includes("youtu.be")) {
                       const embedUrl = url.includes("embed/")
                         ? url
@@ -299,7 +293,6 @@ export default function Home() {
                         />
                       );
                     }
-                    // Vimeo
                     if (url.includes("vimeo.com")) {
                       const vimeoEmbed = toVimeoEmbed(url);
                       return (
@@ -312,7 +305,6 @@ export default function Home() {
                         />
                       );
                     }
-                    // 直接動画ファイル
                     return (
                       <video
                         src={url}
@@ -324,26 +316,24 @@ export default function Home() {
                     );
                   })()
                 ) : (
-                  // サムネイル + 再生ボタン
                   <div
                     className="absolute inset-0 flex items-center justify-center cursor-pointer group"
                     onClick={() => latestMovie?.videoUrl && setMvPlaying(true)}
                   >
-                    {/* サムネイル背景 */}
                     {latestMovie?.thumbnail && (
                       <Image
                         src={latestMovie.thumbnail}
                         alt={latestMovie.title}
                         fill
-                        className="object-cover opacity-30 group-hover:opacity-40 transition-opacity"
+                        className="object-cover opacity-40 group-hover:opacity-50 transition-opacity"
                         unoptimized
                       />
                     )}
                     <div className="relative z-10 text-center">
-                      <div className={`w-20 h-20 rounded-full border-2 border-[var(--ht-pink)] flex items-center justify-center mx-auto mb-4 transition-colors ${latestMovie?.videoUrl ? "hover:bg-[var(--ht-pink)]/10 cursor-pointer" : "opacity-50"}`}>
-                        <span className="text-[var(--ht-pink)] text-2xl ml-1">▶</span>
+                      <div className={`w-20 h-20 rounded-full border-2 border-[var(--ht-pink)] flex items-center justify-center mx-auto mb-4 transition-colors ${latestMovie?.videoUrl ? "hover:bg-[var(--ht-pink)]/20 cursor-pointer" : "opacity-50"}`}>
+                        <span className="text-[var(--ht-pink)] text-2xl ml-1">&#9654;</span>
                       </div>
-                      <p className="font-heading text-sm tracking-wider text-[var(--ht-ivory)]/30">
+                      <p className="font-heading text-sm tracking-wider text-[var(--ht-ivory)]/50">
                         {latestMovie?.videoUrl ? `「${latestMovie.title}」` : latestMovie ? `「${latestMovie.title}」（準備中）` : "Music Video（準備中）"}
                       </p>
                     </div>
@@ -351,8 +341,8 @@ export default function Home() {
                 )}
               </motion.div>
               <div className="text-center mt-8">
-                <Link href="/movie" className="inline-block text-xs font-heading tracking-[0.2em] text-[var(--ht-ivory)]/40 hover:text-[var(--ht-pink)] transition-colors">
-                  VIEW ALL MOVIES →
+                <Link href="/movie" className="inline-block text-xs font-heading tracking-[0.2em] text-[var(--ht-text-muted)] hover:text-[var(--ht-pink)] transition-colors">
+                  VIEW ALL MOVIES &rarr;
                 </Link>
               </div>
             </div>
@@ -363,7 +353,7 @@ export default function Home() {
       {/* ===== STORY TEASER ===== */}
       {story && (
       <section className="py-24 md:py-32 px-6 md:px-10 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[var(--ht-pink)]/3 to-transparent" />
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[var(--ht-pink)]/5 to-transparent" />
         <div className="max-w-[1400px] mx-auto relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -375,16 +365,16 @@ export default function Home() {
               <p className="font-heading text-xs tracking-[0.3em] text-[var(--ht-pink)] mb-4">
                 THE STORY
               </p>
-              <h2 className="font-heading text-3xl md:text-5xl font-bold text-[var(--ht-ivory)] leading-tight mb-6 whitespace-pre-line">
+              <h2 className="font-heading text-3xl md:text-5xl font-bold text-[var(--ht-text)] leading-tight mb-6 whitespace-pre-line">
                 {story.heading}
               </h2>
-              <p className="font-body text-sm text-[var(--ht-ivory)]/50 leading-loose mb-8 whitespace-pre-line">
+              <p className="font-body text-sm text-[var(--ht-text-muted)] leading-loose mb-8 whitespace-pre-line">
                 {story.body}
               </p>
               <div className="flex gap-4">
                 <Link
                   href="/story"
-                  className="inline-block px-8 py-3 border border-[var(--ht-ivory)]/20 text-[var(--ht-ivory)] font-heading text-xs tracking-[0.2em] hover:border-[var(--ht-pink)] hover:text-[var(--ht-pink)] transition-colors"
+                  className="inline-block px-8 py-3 border border-[var(--ht-text)]/15 text-[var(--ht-text)] font-heading text-xs tracking-[0.2em] hover:border-[var(--ht-pink)] hover:text-[var(--ht-pink)] transition-colors rounded-full"
                 >
                   READ THE STORY
                 </Link>
@@ -393,7 +383,7 @@ export default function Home() {
                     href={story.mangaUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block px-8 py-3 text-[var(--ht-teal)] font-heading text-xs tracking-[0.2em] hover:text-[var(--ht-pink)] transition-colors"
+                    className="inline-block px-8 py-3 text-[var(--ht-pink)] font-heading text-xs tracking-[0.2em] hover:text-[var(--ht-teal)] transition-colors"
                   >
                     {story.mangaLabel}
                   </a>
@@ -408,7 +398,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              <div className="aspect-[3/4] bg-gradient-to-br from-[var(--ht-dark-gray)] to-[var(--ht-black)] flex items-center justify-center border border-white/5 relative overflow-hidden">
+              <div className="aspect-[3/4] bg-gradient-to-br from-[var(--ht-bg-alt)] to-white flex items-center justify-center border border-[var(--ht-border)] relative overflow-hidden rounded-2xl shadow-lg">
                 {story.image ? (
                   <Image
                     src={story.image}
@@ -420,18 +410,18 @@ export default function Home() {
                   />
                 ) : (
                   <div className="text-center">
-                    <p className="font-heading text-4xl text-[var(--ht-ivory)]/10">📖</p>
-                    <p className="mt-4 font-heading text-xs tracking-wider text-[var(--ht-ivory)]/20">
+                    <p className="font-heading text-4xl text-[var(--ht-text)]/10">📖</p>
+                    <p className="mt-4 font-heading text-xs tracking-wider text-[var(--ht-text)]/20">
                       ロックが鳴る！
                     </p>
-                    <p className="font-body text-xs text-[var(--ht-ivory)]/15 mt-1">
+                    <p className="font-body text-xs text-[var(--ht-text)]/15 mt-1">
                       連載中 / ジャンプルーキー！
                     </p>
                   </div>
                 )}
               </div>
-              <div className="absolute -top-4 -right-4 w-20 h-20 border border-[var(--ht-pink)]/20" />
-              <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-[var(--ht-teal)]/5" />
+              <div className="absolute -top-4 -right-4 w-20 h-20 border border-[var(--ht-pink)]/20 rounded-xl" />
+              <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-[var(--ht-teal)]/10 rounded-xl" />
             </motion.div>
           </div>
         </div>
@@ -439,7 +429,7 @@ export default function Home() {
       )}
 
       {/* ===== MEMBER ===== */}
-      <section className="py-24 md:py-32 px-6 md:px-10 bg-[#111111] retro-grain">
+      <section className="py-24 md:py-32 px-6 md:px-10 bg-[var(--ht-bg-alt)]">
         <div className="max-w-[1400px] mx-auto relative z-10">
           <SectionHeading title="MEMBER" subtitle="メンバー" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
@@ -448,8 +438,8 @@ export default function Home() {
             ))}
           </div>
           <div className="text-center mt-12">
-            <Link href="/member" className="inline-block text-xs font-heading tracking-[0.2em] text-[var(--ht-ivory)]/40 hover:text-[var(--ht-pink)] transition-colors">
-              VIEW ALL MEMBERS →
+            <Link href="/member" className="inline-block text-xs font-heading tracking-[0.2em] text-[var(--ht-text-muted)] hover:text-[var(--ht-pink)] transition-colors">
+              VIEW ALL MEMBERS &rarr;
             </Link>
           </div>
         </div>
@@ -464,14 +454,14 @@ export default function Home() {
           ))}
         </div>
         <div className="text-center mt-10">
-          <Link href="/news" className="inline-block text-xs font-heading tracking-[0.2em] text-[var(--ht-ivory)]/40 hover:text-[var(--ht-pink)] transition-colors">
-            VIEW ALL NEWS →
+          <Link href="/news" className="inline-block text-xs font-heading tracking-[0.2em] text-[var(--ht-text-muted)] hover:text-[var(--ht-pink)] transition-colors">
+            VIEW ALL NEWS &rarr;
           </Link>
         </div>
       </section>
 
       {/* ===== GOODS TEASER ===== */}
-      <section className="py-24 md:py-32 px-6 md:px-10 bg-[var(--ht-dark-gray)] retro-grain">
+      <section className="py-24 md:py-32 px-6 md:px-10 bg-[var(--ht-bg-alt)]">
         <div className="max-w-[1400px] mx-auto relative z-10">
           <SectionHeading title="GOODS" subtitle="グッズ" />
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -482,7 +472,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="aspect-square bg-[var(--ht-black)] relative overflow-hidden group"
+                className="aspect-square bg-white relative overflow-hidden group rounded-2xl shadow-md"
               >
                 {item.image ? (
                   <Image
@@ -495,7 +485,7 @@ export default function Home() {
                   />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <p className="font-heading text-sm text-[var(--ht-ivory)]/10">{item.name}</p>
+                    <p className="font-heading text-sm text-[var(--ht-text)]/10">{item.name}</p>
                   </div>
                 )}
               </motion.div>
@@ -504,7 +494,7 @@ export default function Home() {
           <div className="text-center mt-10">
             <Link
               href="/goods"
-              className="inline-block px-8 py-3 bg-[var(--ht-pink)] text-[var(--ht-ivory)] font-heading text-xs tracking-[0.2em] hover:bg-[var(--ht-pink)]/80 transition-colors"
+              className="inline-block px-8 py-3 bg-[var(--ht-pink)] text-white font-heading text-xs tracking-[0.2em] hover:bg-[var(--ht-pink)]/80 transition-colors rounded-full"
             >
               SHOP NOW
             </Link>
