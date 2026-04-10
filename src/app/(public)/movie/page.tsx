@@ -6,6 +6,24 @@ import Image from "next/image";
 import SectionHeading from "@/components/SectionHeading";
 import { getMovies, type Movie } from "@/lib/cms";
 
+// Vimeo URL → 埋め込みURL（限定公開のハッシュ対応）
+function toVimeoEmbed(url: string): string {
+  // player.vimeo.com/video/ID 形式
+  if (url.includes("player.vimeo.com")) {
+    return url.includes("?") ? url : `${url}?`;
+  }
+  // vimeo.com/ID/HASH（限定公開）or vimeo.com/ID
+  const match = url.match(/vimeo\.com\/(\d+)(?:\/([a-zA-Z0-9]+))?/);
+  if (match) {
+    const id = match[1];
+    const hash = match[2];
+    return hash
+      ? `https://player.vimeo.com/video/${id}?h=${hash}`
+      : `https://player.vimeo.com/video/${id}?`;
+  }
+  return url;
+}
+
 // 動画URLからiframe/videoを生成するヘルパー
 function VideoPlayer({ url }: { url: string }) {
   if (url.includes("youtube.com") || url.includes("youtu.be")) {
@@ -24,12 +42,10 @@ function VideoPlayer({ url }: { url: string }) {
     );
   }
   if (url.includes("vimeo.com")) {
-    const vimeoId = url.includes("player.vimeo.com")
-      ? url.split("/video/")[1]?.split(/[?/]/)[0]
-      : url.split("vimeo.com/")[1]?.split(/[?/]/)[0];
+    const vimeoEmbed = toVimeoEmbed(url);
     return (
       <iframe
-        src={`https://player.vimeo.com/video/${vimeoId}?title=0&byline=0&portrait=0`}
+        src={`${vimeoEmbed}&title=0&byline=0&portrait=0`}
         className="absolute inset-0 w-full h-full"
         allow="autoplay; fullscreen"
         allowFullScreen

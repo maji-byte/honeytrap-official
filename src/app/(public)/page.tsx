@@ -22,6 +22,22 @@ import type { GoodsItem } from "@/data/goods";
 import type { Member } from "@/data/members";
 import type { NewsItem } from "@/data/news";
 
+// Vimeo URL → 埋め込みURL（限定公開のハッシュ対応）
+function toVimeoEmbed(url: string): string {
+  if (url.includes("player.vimeo.com")) {
+    return url.includes("?") ? url : `${url}?`;
+  }
+  const match = url.match(/vimeo\.com\/(\d+)(?:\/([a-zA-Z0-9]+))?/);
+  if (match) {
+    const id = match[1];
+    const hash = match[2];
+    return hash
+      ? `https://player.vimeo.com/video/${id}?h=${hash}`
+      : `https://player.vimeo.com/video/${id}?`;
+  }
+  return url;
+}
+
 export default function Home() {
   const [hero, setHero] = useState<HeroContent | null>(null);
   const [members, setMembers] = useState<Member[]>([]);
@@ -280,12 +296,10 @@ export default function Home() {
                     }
                     // Vimeo
                     if (url.includes("vimeo.com")) {
-                      const vimeoId = url.includes("player.vimeo.com")
-                        ? url.split("/video/")[1]?.split(/[?/]/)[0]
-                        : url.split("vimeo.com/")[1]?.split(/[?/]/)[0];
+                      const vimeoEmbed = toVimeoEmbed(url);
                       return (
                         <iframe
-                          src={`https://player.vimeo.com/video/${vimeoId}?autoplay=1&title=0&byline=0&portrait=0`}
+                          src={`${vimeoEmbed}&autoplay=1&title=0&byline=0&portrait=0`}
                           className="absolute inset-0 w-full h-full"
                           allow="autoplay; fullscreen"
                           allowFullScreen
