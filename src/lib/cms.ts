@@ -212,11 +212,34 @@ function isBrowser(): boolean {
   return typeof window !== "undefined";
 }
 
+// デフォルト値で空フィールドを補完するヘルパー
+function mergeDefaults<T>(stored: T, fallback: T): T {
+  if (!fallback || typeof fallback !== "object" || Array.isArray(fallback)) return stored;
+  const result = { ...stored } as Record<string, unknown>;
+  const fb = fallback as Record<string, unknown>;
+  for (const key in fb) {
+    if (fb[key] !== "" && (result[key] === "" || result[key] === undefined || result[key] === null)) {
+      result[key] = fb[key];
+    }
+    // ネストされたオブジェクトも補完
+    if (fb[key] && typeof fb[key] === "object" && !Array.isArray(fb[key]) && result[key] && typeof result[key] === "object") {
+      result[key] = mergeDefaults(result[key] as Record<string, unknown>, fb[key] as Record<string, unknown>);
+    }
+  }
+  return result as T;
+}
+
 function getStorage<T>(key: string, fallback: T): T {
   if (!isBrowser()) return fallback;
   try {
     const stored = localStorage.getItem(`ht-cms-${key}`);
-    return stored ? JSON.parse(stored) : fallback;
+    if (!stored) return fallback;
+    const parsed = JSON.parse(stored) as T;
+    // オブジェクトの場合、デフォルト値で空フィールドを補完
+    if (fallback && typeof fallback === "object" && !Array.isArray(fallback)) {
+      return mergeDefaults(parsed, fallback);
+    }
+    return parsed;
   } catch {
     return fallback;
   }
