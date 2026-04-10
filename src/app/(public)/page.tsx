@@ -14,9 +14,11 @@ import {
   getGoods,
   getMusicReleases,
   getStoryTeaser,
+  getMovies,
   type HeroContent,
   type MusicRelease,
   type StoryTeaser,
+  type Movie,
 } from "@/lib/cms";
 import type { GoodsItem } from "@/data/goods";
 import type { Member } from "@/data/members";
@@ -45,6 +47,7 @@ export default function Home() {
   const [releases, setReleases] = useState<MusicRelease[]>([]);
   const [story, setStory] = useState<StoryTeaser | null>(null);
   const [goods, setGoods] = useState<GoodsItem[]>([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [mvPlaying, setMvPlaying] = useState(false);
 
   const loadData = () => {
@@ -54,6 +57,7 @@ export default function Home() {
     setReleases(getMusicReleases());
     setStory(getStoryTeaser());
     setGoods(getGoods());
+    setMovies(getMovies());
   };
 
   useEffect(() => {
@@ -262,7 +266,8 @@ export default function Home() {
 
       {/* ===== MUSIC VIDEO ===== */}
       {(() => {
-        const mvRelease = releases.find((r) => r.mvUrl);
+        // MOVIEデータの最新（先頭）を表示
+        const latestMovie = movies.length > 0 ? movies[0] : null;
         return (
           <section className="py-24 md:py-32 px-6 md:px-10 bg-[#111111] retro-grain">
             <div className="max-w-[1400px] mx-auto relative z-10">
@@ -274,10 +279,10 @@ export default function Home() {
                 transition={{ duration: 0.6 }}
                 className="aspect-video bg-[var(--ht-black)] max-w-4xl mx-auto relative overflow-hidden"
               >
-                {mvRelease && mvPlaying ? (
+                {latestMovie && mvPlaying && latestMovie.videoUrl ? (
                   // 再生中: YouTube / Vimeo 埋め込み or 動画ファイル
                   (() => {
-                    const url = mvRelease.mvUrl;
+                    const url = latestMovie.videoUrl;
                     // YouTube
                     if (url.includes("youtube.com") || url.includes("youtu.be")) {
                       const embedUrl = url.includes("embed/")
@@ -311,9 +316,10 @@ export default function Home() {
                     return (
                       <video
                         src={url}
-                        className="absolute inset-0 w-full h-full object-contain"
+                        className="absolute inset-0 w-full h-full object-contain bg-black"
                         controls
                         autoPlay
+                        playsInline
                       />
                     );
                   })()
@@ -321,24 +327,24 @@ export default function Home() {
                   // サムネイル + 再生ボタン
                   <div
                     className="absolute inset-0 flex items-center justify-center cursor-pointer group"
-                    onClick={() => mvRelease && setMvPlaying(true)}
+                    onClick={() => latestMovie?.videoUrl && setMvPlaying(true)}
                   >
                     {/* サムネイル背景 */}
-                    {mvRelease?.jacket && (
+                    {latestMovie?.thumbnail && (
                       <Image
-                        src={mvRelease.jacket}
-                        alt={mvRelease.title}
+                        src={latestMovie.thumbnail}
+                        alt={latestMovie.title}
                         fill
                         className="object-cover opacity-30 group-hover:opacity-40 transition-opacity"
                         unoptimized
                       />
                     )}
                     <div className="relative z-10 text-center">
-                      <div className={`w-20 h-20 rounded-full border-2 border-[var(--ht-pink)] flex items-center justify-center mx-auto mb-4 transition-colors ${mvRelease ? "hover:bg-[var(--ht-pink)]/10 cursor-pointer" : "opacity-50"}`}>
+                      <div className={`w-20 h-20 rounded-full border-2 border-[var(--ht-pink)] flex items-center justify-center mx-auto mb-4 transition-colors ${latestMovie?.videoUrl ? "hover:bg-[var(--ht-pink)]/10 cursor-pointer" : "opacity-50"}`}>
                         <span className="text-[var(--ht-pink)] text-2xl ml-1">▶</span>
                       </div>
                       <p className="font-heading text-sm tracking-wider text-[var(--ht-ivory)]/30">
-                        {mvRelease ? `「${mvRelease.title}」 Music Video` : "Music Video（準備中）"}
+                        {latestMovie?.videoUrl ? `「${latestMovie.title}」` : latestMovie ? `「${latestMovie.title}」（準備中）` : "Music Video（準備中）"}
                       </p>
                     </div>
                   </div>
