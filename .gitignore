@@ -38,7 +38,6 @@ yarn-error.log*
 
 # large media files (uploaded via CMS)
 /public/videos/
-/public/audio/
 
 # typescript
 *.tsbuildinfo

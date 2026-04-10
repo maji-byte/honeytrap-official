@@ -53,7 +53,7 @@ const defaultReleases: MusicRelease[] = [
     spotifyUrl: "",
     appleMusicUrl: "",
     mvUrl: "",
-    audioFile: "",
+    audioFile: "/audio/release-1.mp3",
   },
   {
     id: "release-2",
@@ -65,7 +65,7 @@ const defaultReleases: MusicRelease[] = [
     spotifyUrl: "",
     appleMusicUrl: "",
     mvUrl: "",
-    audioFile: "",
+    audioFile: "/audio/release-2.mp3",
   },
   {
     id: "release-3",
@@ -77,7 +77,7 @@ const defaultReleases: MusicRelease[] = [
     spotifyUrl: "",
     appleMusicUrl: "",
     mvUrl: "",
-    audioFile: "",
+    audioFile: "/audio/release-3.mp3",
   },
 ];
 
