@@ -6,6 +6,9 @@ import {
   getMusicReleases,
   saveMusicReleases,
   resetMusicReleases,
+  getStreamingSpotifyUrl,
+  saveStreamingSpotifyUrl,
+  resetStreamingSpotifyUrl,
   type MusicRelease,
 } from "@/lib/cms";
 import ImageUploader from "@/components/admin/ImageUploader";
@@ -14,15 +17,18 @@ import AudioUploader from "@/components/admin/AudioUploader";
 
 export default function AdminMusic() {
   const [releases, setReleases] = useState<MusicRelease[]>([]);
+  const [streamingUrl, setStreamingUrl] = useState<string>("");
   const [editId, setEditId] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     setReleases(getMusicReleases());
+    setStreamingUrl(getStreamingSpotifyUrl());
   }, []);
 
   const handleSave = () => {
     saveMusicReleases(releases);
+    saveStreamingSpotifyUrl(streamingUrl);
     setSaved(true);
     setEditId(null);
     setTimeout(() => setSaved(false), 2000);
@@ -31,6 +37,7 @@ export default function AdminMusic() {
   const handleReset = () => {
     const defaults = resetMusicReleases();
     setReleases(defaults);
+    setStreamingUrl(resetStreamingSpotifyUrl());
     setEditId(null);
   };
 
@@ -83,6 +90,28 @@ export default function AdminMusic() {
             {saved ? "✓ 保存しました" : "保存する"}
           </button>
         </div>
+      </div>
+
+      {/* STREAMING セクション用 Spotify URL */}
+      <div className="bg-[#1A1A1F] border border-white/5 rounded-xl p-5 mb-6">
+        <div className="flex items-start gap-3 mb-3">
+          <div className="w-8 h-8 bg-[#1DB954] rounded-lg flex items-center justify-center text-white text-sm flex-shrink-0">♪</div>
+          <div>
+            <h2 className="font-heading text-sm font-bold text-[var(--ht-ivory)] tracking-wider">
+              STREAMING セクション (Spotify 埋め込み)
+            </h2>
+            <p className="text-xs text-[var(--ht-ivory)]/40 font-body mt-0.5">
+              MUSICページのSTREAMINGセクションに表示するSpotifyのトラック／アルバム／アーティスト／プレイリストURL
+            </p>
+          </div>
+        </div>
+        <input
+          type="text"
+          value={streamingUrl}
+          onChange={(e) => setStreamingUrl(e.target.value)}
+          placeholder="https://open.spotify.com/playlist/..."
+          className="w-full bg-[#111115] border border-white/10 rounded-lg px-4 py-2.5 text-xs text-[var(--ht-ivory)] font-mono focus:border-[var(--ht-pink)] focus:outline-none transition-colors"
+        />
       </div>
 
       <div className="space-y-4">

@@ -84,6 +84,10 @@ const defaultReleases: MusicRelease[] = [
   },
 ];
 
+// ===== Streaming (Spotify 埋め込み) =====
+const defaultStreamingSpotifyUrl =
+  "https://open.spotify.com/playlist/4Y4J5gGnbKC8KPFAsDW3bt";
+
 // ===== Story Teaser (トップページ) =====
 export type StoryTeaser = {
   heading: string;
@@ -293,6 +297,10 @@ export function getAbout(): AboutContent {
   return getStorage("about", defaultAbout);
 }
 
+export function getStreamingSpotifyUrl(): string {
+  return getStorage("streamingSpotifyUrl", defaultStreamingSpotifyUrl);
+}
+
 // ===== Admin API: Write =====
 export function saveHeroContent(data: HeroContent): void {
   setStorage("hero", data);
@@ -332,6 +340,10 @@ export function saveGallery(data: GalleryItem[]): void {
 
 export function saveAbout(data: AboutContent): void {
   setStorage("about", data);
+}
+
+export function saveStreamingSpotifyUrl(url: string): void {
+  setStorage("streamingSpotifyUrl", url);
 }
 
 // ===== Admin API: Reset =====
@@ -385,5 +397,10 @@ export function resetAbout(): AboutContent {
   return defaultAbout;
 }
 
+export function resetStreamingSpotifyUrl(): string {
+  setStorage("streamingSpotifyUrl", defaultStreamingSpotifyUrl);
+  return defaultStreamingSpotifyUrl;
+}
+
 // ===== Default exports (for admin forms) =====
-export { defaultHero, defaultStoryTeaser, defaultStoryPage, defaultReleases, defaultMovies, defaultMembers, defaultNews, defaultGoods, defaultGalleryItems, defaultAbout };
+export { defaultHero, defaultStoryTeaser, defaultStoryPage, defaultReleases, defaultMovies, defaultMembers, defaultNews, defaultGoods, defaultGalleryItems, defaultAbout, defaultStreamingSpotifyUrl };

@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import SectionHeading from "@/components/SectionHeading";
-import { getMusicReleases, type MusicRelease } from "@/lib/cms";
+import { getMusicReleases, getStreamingSpotifyUrl, type MusicRelease } from "@/lib/cms";
 
 // Spotify URLから埋め込みURLを生成
 function toSpotifyEmbed(url: string): string | null {
@@ -95,10 +95,15 @@ function AudioPlayer({ src, title, jacket }: { src: string; title: string; jacke
 
 export default function MusicPage() {
   const [releases, setReleases] = useState<MusicRelease[]>([]);
+  const [streamingUrl, setStreamingUrl] = useState<string>("");
 
   useEffect(() => {
     setReleases(getMusicReleases());
-    const handler = () => setReleases(getMusicReleases());
+    setStreamingUrl(getStreamingSpotifyUrl());
+    const handler = () => {
+      setReleases(getMusicReleases());
+      setStreamingUrl(getStreamingSpotifyUrl());
+    };
     window.addEventListener("ht-cms-update", handler);
     window.addEventListener("storage", handler);
     return () => {
@@ -107,8 +112,10 @@ export default function MusicPage() {
     };
   }, []);
 
-  const spotifyRelease = releases.find((r) => r.spotifyUrl);
-  const spotifyEmbed = spotifyRelease ? toSpotifyEmbed(spotifyRelease.spotifyUrl) : null;
+  // STREAMINGセクション: 専用URLを優先、なければリリースから検索
+  const spotifyEmbed =
+    toSpotifyEmbed(streamingUrl) ||
+    toSpotifyEmbed(releases.find((r) => r.spotifyUrl)?.spotifyUrl || "");
 
   return (
     <>
