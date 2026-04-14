@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import type { GoodsItem } from "@/data/goods";
 
@@ -18,6 +19,22 @@ const statusStyles: Record<GoodsItem["status"], { bg: string; text: string }> = 
 export default function GoodsCard({ item, index }: Props) {
   const status = statusStyles[item.status];
   const isSoldOut = item.status === "SOLD OUT";
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  // ESCキーで閉じる / 背景スクロール固定
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightboxOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [lightboxOpen]);
 
   return (
     <motion.div
@@ -30,7 +47,13 @@ export default function GoodsCard({ item, index }: Props) {
       {/* Card */}
       <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-500">
         {/* Image */}
-        <div className="relative aspect-square bg-[var(--ht-bg-alt)] overflow-hidden">
+        <button
+          type="button"
+          onClick={() => item.image && setLightboxOpen(true)}
+          disabled={!item.image}
+          aria-label={`${item.name} を拡大表示`}
+          className="relative aspect-square w-full bg-[var(--ht-bg-alt)] overflow-hidden block cursor-zoom-in disabled:cursor-default"
+        >
           {item.image ? (
             <Image
               src={item.image}
@@ -52,7 +75,7 @@ export default function GoodsCard({ item, index }: Props) {
           >
             {item.status}
           </div>
-        </div>
+        </button>
 
         {/* Info with gradient */}
         <div className="p-4" style={{ background: "linear-gradient(135deg, rgba(232,69,107,0.04), rgba(67,214,208,0.06), transparent)" }}>
@@ -71,6 +94,51 @@ export default function GoodsCard({ item, index }: Props) {
           )}
         </div>
       </div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxOpen && item.image && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setLightboxOpen(false)}
+            className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-6 md:p-12 cursor-zoom-out"
+          >
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); setLightboxOpen(false); }}
+              aria-label="閉じる"
+              className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xl leading-none transition-colors"
+            >
+              &times;
+            </button>
+            <motion.div
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-4xl aspect-square"
+            >
+              <Image
+                src={item.image}
+                alt={item.name}
+                fill
+                className="object-contain"
+                sizes="100vw"
+                unoptimized
+                priority
+              />
+            </motion.div>
+            <div className="absolute bottom-6 left-0 right-0 text-center text-white">
+              <p className="font-body text-sm">{item.name}</p>
+              <p className="font-heading text-xs text-white/60 mt-1">{item.price}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
