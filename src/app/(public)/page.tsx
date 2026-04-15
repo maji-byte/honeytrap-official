@@ -23,22 +23,7 @@ import {
 import type { GoodsItem } from "@/data/goods";
 import type { Member } from "@/data/members";
 import type { NewsItem } from "@/data/news";
-
-// Vimeo URL → 埋め込みURL（限定公開のハッシュ対応）
-function toVimeoEmbed(url: string): string {
-  if (url.includes("player.vimeo.com")) {
-    return url.includes("?") ? url : `${url}?`;
-  }
-  const match = url.match(/vimeo\.com\/(\d+)(?:\/([a-zA-Z0-9]+))?/);
-  if (match) {
-    const id = match[1];
-    const hash = match[2];
-    return hash
-      ? `https://player.vimeo.com/video/${id}?h=${hash}`
-      : `https://player.vimeo.com/video/${id}?`;
-  }
-  return url;
-}
+import { addParams, toYouTubeEmbed, toVimeoEmbed, isYouTube, isVimeo } from "@/lib/videoEmbed";
 
 export default function Home() {
   const [hero, setHero] = useState<HeroContent | null>(null);
@@ -278,26 +263,27 @@ export default function Home() {
                 {latestMovie && mvPlaying && latestMovie.videoUrl ? (
                   (() => {
                     const url = latestMovie.videoUrl;
-                    if (url.includes("youtube.com") || url.includes("youtu.be")) {
-                      const embedUrl = url.includes("embed/")
-                        ? url
-                        : url.includes("youtu.be/")
-                          ? `https://www.youtube.com/embed/${url.split("youtu.be/")[1].split("?")[0]}`
-                          : url.replace("watch?v=", "embed/").split("&")[0];
+                    if (isYouTube(url)) {
+                      const embedUrl = addParams(toYouTubeEmbed(url), { autoplay: "1", rel: "0" });
                       return (
                         <iframe
-                          src={`${embedUrl}?autoplay=1&rel=0`}
+                          src={embedUrl}
                           className="absolute inset-0 w-full h-full"
                           allow="autoplay; encrypted-media; fullscreen"
                           allowFullScreen
                         />
                       );
                     }
-                    if (url.includes("vimeo.com")) {
-                      const vimeoEmbed = toVimeoEmbed(url);
+                    if (isVimeo(url)) {
+                      const vimeoEmbed = addParams(toVimeoEmbed(url), {
+                        autoplay: "1",
+                        title: "0",
+                        byline: "0",
+                        portrait: "0",
+                      });
                       return (
                         <iframe
-                          src={`${vimeoEmbed}&autoplay=1&title=0&byline=0&portrait=0`}
+                          src={vimeoEmbed}
                           className="absolute inset-0 w-full h-full bg-black"
                           allow="autoplay; fullscreen"
                           allowFullScreen
