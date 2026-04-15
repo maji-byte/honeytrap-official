@@ -86,7 +86,7 @@ const defaultReleases: MusicRelease[] = [
 
 // ===== Streaming (Spotify 埋め込み) =====
 const defaultStreamingSpotifyUrl =
-  "https://open.spotify.com/playlist/4Y4J5gGnbKC8KPFAsDW3bt";
+  "https://open.spotify.com/artist/3YmAt9U9INQwxAwfgMVfKD";
 
 // ===== Story Teaser (トップページ) =====
 export type StoryTeaser = {
